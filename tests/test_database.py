@@ -53,7 +53,7 @@ def test_structure(db_connection):
     sql = ''' 
             SELECT tablename FROM pg_tables 
             WHERE tablename
-              IN ('alumno', 'cursos', 'maestros', 'grupos',
+            IN ('alumno', 'cursos', 'maestros', 'grupos',
                   'inscripcion', 'asistencia');
           '''
     expected_tables = {'alumno', 'cursos', 'maestros', 'grupos',
@@ -62,5 +62,5 @@ def test_structure(db_connection):
         cur.execute(sql)
         result_tables = {row[0] for row in cur.fetchall()}
         msg = f'''Expected tables {expected_tables}, but found {result_tables}'''
-        assert result_tables == expected_tables, msg
+         assert expected_tables.issubset(result_tables)
 
