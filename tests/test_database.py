@@ -52,8 +52,7 @@ def test_asistencia_insertado(db_connection):
 def test_structure(db_connection):
     sql = ''' 
             SELECT tablename FROM pg_tables 
-            WHERE schemaname = 'public'
-              AND tablename 
+            WHERE tablename
               IN ('alumno', 'cursos', 'maestros', 'grupos',
                   'inscripcion', 'asistencia');
           '''
