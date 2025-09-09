@@ -19,6 +19,12 @@ def test_alumno_insertado(db_connection):
         count = cur.fetchone()[0]
         assert count == 10
 
+def test_cursos_insertado(db_connection):
+    with db_connection.cursor() as cur:
+        cur.execute("SELECT COUNT(*) FROM cursos;")
+        count = cur.fetchone()[0]
+        assert count == 10
+
 def test_maestros_insertado(db_connection):
     with db_connection.cursor() as cur:
         cur.execute("SELECT COUNT(*) FROM maestros;")
@@ -46,16 +52,16 @@ def test_asistencia_insertado(db_connection):
 def test_structure(db_connection):
     sql = ''' 
             SELECT tablename FROM pg_tables 
-            WHERE tablename 
-            IN ('alumno', 'maestros', 'grupos',
-            'inscripcion', 'asistencia');
+            WHERE schemaname = 'public'
+              AND tablename 
+              IN ('alumno', 'cursos', 'maestros', 'grupos',
+                  'inscripcion', 'asistencia');
           '''
-    expected_tables = {'alumno', 'maestros',
-                       'grupos', 'inscripcion',
-                       'asistencia'}
+    expected_tables = {'alumno', 'cursos', 'maestros', 'grupos',
+                       'inscripcion', 'asistencia'}
     with db_connection.cursor() as cur:
         cur.execute(sql)
         result_tables = {row[0] for row in cur.fetchall()}
-        msg = f'''Expected tables {expected_tables},
-              but found {result_tables}'''
+        msg = f'''Expected tables {expected_tables}, but found {result_tables}'''
         assert result_tables == expected_tables, msg
+
